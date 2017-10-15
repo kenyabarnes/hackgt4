@@ -59,9 +59,7 @@ def getTimeline(screenName, tweetCount, excludeReplies):
 def currentTime():
     currentTime = time.strftime('%Y-%m-%d--%H-%M-%S')
     return currentTime
-def getTweet(tweetID):
-    twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
-    return
+
 def ffmpeg_concat_mp4_to_mp4(files, output='output.mp4'):
     print('Merging video parts... ', end="", flush=True)
     # Use concat demuxer on FFmpeg >= 1.1
