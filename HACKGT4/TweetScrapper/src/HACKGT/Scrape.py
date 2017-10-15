@@ -29,39 +29,16 @@ def getStatus(tweetID):
         results = twitter.show_status(id=tweetID)
         return results
 
-        '''fp = codecs.open('.\Results\\'+currentTime()+' (STATUS).txt', 'w','utf-8')
-        fp.write('Created: '+results['created_at'])
-        fp.write('\r\n')
-        fp.write(str(results['text']+'\r\n\r\n'))
-        fp.close()'''
 def getTimeline(screenName, tweetCount, excludeReplies):
     twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
     results = twitter.get_user_timeline(screen_name=screenName, count=tweetCount)
-    if tweetCount <= 100:
-        for result in results:
-            try:
-                '''temp= 'Tweet ID: ',esult['id'],'\n Text: ', result['text'],'\n Created: ', result['created_at']
-                print((temp))
-                '''
-                print ('Tweet ID: ', result['id'])
-                '''print ('Text: ', result['text'])
-                print ('Created: ', result['created_at'])
-                print ('===================//===================\n')'''
-            except:
-                print ("Failed to ")
-    else:
-        fp = open('TIMELINE.txt', 'w')
-        for result in results:
-            fp.write('Tweet ID: '+str(result['id'])+'\r\n')
-            fp.write('Text: '+result['text']+'\r\n')
-            fp.write('Created: '+str(result['created_at'])+'\r\n')
-            fp.write('===================//===================\r\n')
+    for result in results:
+            dataprocess(result)
+
 def currentTime():
     currentTime = time.strftime('%Y-%m-%d--%H-%M-%S')
     return currentTime
-def getTweet(tweetID):
-    twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
-    return
+
 def ffmpeg_concat_mp4_to_mp4(files, output='output.mp4'):
     print('Merging video parts... ', end="", flush=True)
     # Use concat demuxer on FFmpeg >= 1.1
@@ -98,40 +75,44 @@ def ffmpeg_concat_mp4_to_mp4(files, output='output.mp4'):
     for file in files:
         os.remove(file + '.ts')
     return True
-#getTimeline('@realDonaldTrump', 5, False).encode('ascii', 'ignore')
-#getStatus()
-status= getStatus(919009334016856065)#(vid) 918960024256434176 (pic) 918894502185787392 (text) 919009334016856065
-ent=status['entities']
-us=status['user']
-#print(status)
-#why try catch you say. im lazy.
-try:
+def dataprocess(status):
     ent=status['entities']
     us=status['user']
-    has=ent['hashtags']
-
+    #print(status)
+    #why try catch you say. im lazy.
     try:
-        has1=has[0]
-        has2=has1['text']
-    except:
-        has2="N/A"
-    try:
-        med=ent['media']
-        string= med[0]
-    except:
-        string={'expanded_url':'N/A'}
-    try:
-        typ=status['extended_entities']
-        typ1=typ['media']
-        typ2=typ1[0]
-    except:
-        typ2={'type':'Text'}
-    print(us['screen_name'],status['text'], has2,string['expanded_url'],typ2['type'])
+        ent=status['entities']
+        us=status['user']
+        has=ent['hashtags']
+
+        try:
+            has1=has[0]
+            has2=has1['text']
+        except:
+            has2="N/A"
+        try:
+            med=ent['media']
+            string= med[0]
+        except:
+            string={'expanded_url':'N/A'}
+        try:
+            typ=status['extended_entities']
+            typ1=typ['media']
+            typ2=typ1[0]
+        except:
+            typ2={'type':'Text'}
+        print(us['screen_name'],status['text'], has2,string['expanded_url'],typ2['type'])
 
 
-except Exception as e:# should never get here if it does we fucked
-    print (e)
-    print(us['screen_name'],status['text'],"fuck")
+    except Exception as e:# should never get here if it does we fucked
+        print (e)
+        print(us['screen_name'],status['text'],"fuck")
+
+getTimeline('@realDonaldTrump', 20, False)
+#getStatus()
+#status= getStatus(919009334016856065)#(vid) 918960024256434176 (pic) 918894502185787392 (text) 919009334016856065
+#dataprocess(status)
+
 
 
 '''cmd='you-get -n' + string['expanded_url']
