@@ -9,7 +9,7 @@ import ast
 import you_get
 import os
 import subprocess
-import ffmpeg_normalize as FFMPEG
+
 
 #Application Key and Application Secret from app.twitter.com
 APP_KEY = 'AzOXf1QIO4LUjbi7zpD0RzH6m'
@@ -29,11 +29,11 @@ def getStatus(tweetID):
         results = twitter.show_status(id=tweetID)
         return results
 
-def getTimeline(screenName, tweetCount, excludeReplies):
+def getTimeline(screenName, tweetCount, excludeReplies,files):
     twitter = Twython(APP_KEY, access_token=ACCESS_TOKEN)
     results = twitter.get_user_timeline(screen_name=screenName, count=tweetCount)
     for result in results:
-            dataprocess(result)
+            dataprocess(result,files)
 
 def currentTime():
     currentTime = time.strftime('%Y-%m-%d--%H-%M-%S')
@@ -75,9 +75,10 @@ def ffmpeg_concat_mp4_to_mp4(files, output='output.mp4'):
     for file in files:
         os.remove(file + '.ts')
     return True
-def dataprocess(status):
+def dataprocess(status,file):
     ent=status['entities']
     us=status['user']
+    temp="lol"
     #print(status)
     #why try catch you say. im lazy.
     try:
@@ -93,6 +94,8 @@ def dataprocess(status):
         try:
             med=ent['media']
             string= med[0]
+            videoProcess(string['expanded_url'])
+
         except:
             string={'expanded_url':'N/A'}
         try:
@@ -103,23 +106,32 @@ def dataprocess(status):
             typ2={'type':'Text'}
         print(us['screen_name'],status['text'], has2,string['expanded_url'],typ2['type'])
 
+        file.write(str("[{text:" +status['text'] +",intent: None,entities:[{entity: FamilyMember,startPos: 4,endPos: 6}]},"))
+
 
     except Exception as e:# should never get here if it does we fucked
         print (e)
         print(us['screen_name'],status['text'],"fuck")
 
-getTimeline('@realDonaldTrump', 20, False)
+def videoProcess(vidURL):
+    if(not(vidURL is 'N/A')):
+        os.system("you-get "+vidURL)
+    return
+output= open("out.txt",'w')
+getTimeline('@realDonaldTrump', 20, False,output)
 #getStatus()
-#status= getStatus(919009334016856065)#(vid) 918960024256434176 (pic) 918894502185787392 (text) 919009334016856065
-#dataprocess(status)
-
+#status= getStatus(918960024256434176)#(vid) 918960024256434176 (pic) 918894502185787392 (text) 919009334016856065
+#print(status)
+#dataprocess(status,output)
+#videoProcess(string['expanded_url'])
+#os.system("you-get https://m.twitter.com/realDonaldTrump/status/918960024256434176/video/1")
 
 
 '''cmd='you-get -n' + string['expanded_url']
 #cmd='you-get http://www.fsf.org/blogs/rms/20140407-geneva-tedx-talk-free-software-free-society'
 proc='hi'
 #proc = subprocess.run(["you-get","-n" ,string['expanded_url']], stdout=subprocess.PIPE)
-#os.system(cmd)
+os.system(cmd)
 #print(proc)
 #temp =ffmpeg_concat_mp4_to_mp4(proc,"output")
 command = "cmd.exe"
