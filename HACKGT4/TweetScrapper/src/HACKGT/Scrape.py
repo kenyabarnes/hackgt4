@@ -100,16 +100,41 @@ def ffmpeg_concat_mp4_to_mp4(files, output='output.mp4'):
     return True
 #getTimeline('@realDonaldTrump', 5, False).encode('ascii', 'ignore')
 #getStatus()
-status= getStatus(918960024256434176)
+status= getStatus(919009334016856065)#(vid) 918960024256434176 (pic) 918894502185787392 (text) 919009334016856065
 ent=status['entities']
-med=ent['media']
+us=status['user']
+#print(status)
+#why try catch you say. im lazy.
+try:
+    ent=status['entities']
+    us=status['user']
+    has=ent['hashtags']
 
-print(med)
-string= med[0]
-print(string)
+    try:
+        has1=has[0]
+        has2=has1['text']
+    except:
+        has2="N/A"
+    try:
+        med=ent['media']
+        string= med[0]
+    except:
+        string={'expanded_url':'N/A'}
+    try:
+        typ=status['extended_entities']
+        typ1=typ['media']
+        typ2=typ1[0]
+    except:
+        typ2={'type':'Text'}
+    print(us['screen_name'],status['text'], has2,string['expanded_url'],typ2['type'])
 
-print (string['expanded_url'])
-cmd='you-get -n' + string['expanded_url']
+
+except Exception as e:# should never get here if it does we fucked
+    print (e)
+    print(us['screen_name'],status['text'],"fuck")
+
+
+'''cmd='you-get -n' + string['expanded_url']
 #cmd='you-get http://www.fsf.org/blogs/rms/20140407-geneva-tedx-talk-free-software-free-society'
 proc='hi'
 #proc = subprocess.run(["you-get","-n" ,string['expanded_url']], stdout=subprocess.PIPE)
@@ -121,4 +146,4 @@ stdin=''
 stdout=''
 proc = subprocess.Popen(command, stdin = subprocess.PIPE, stdout = subprocess.PIPE)
 proc.stdin.write(cmd)
-print(stdout)
+print(stdout)'''
