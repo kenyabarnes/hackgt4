@@ -8,18 +8,18 @@ import time
 import codecs
 
 #Fill these with your application key and application secret, taken from Twitter.
-APP_KEY ='oRJBbEynRmneoi4W5Ljppp2j3' 
+APP_KEY ='' 
 #YOUR_APP_KEY
-APP_SECRET ='RrdUobkR8gLv3CjbP68SINyOhk6p0uZ8u2Elc4h0O8DWiOkpjZ'
+APP_SECRET =''
 #'YOUR_APP_SECRET'
 
 #Use getToken() to get your application-only access token, then replace it here.
-ACCESS_TOKEN = 'AAAAAAAAAAAAAAAAAAAAAJHf1AAAAAAAM7KCyABf4Hd4iNSa4DNgewvppno%3DwNjJJHVa1WhDmjbrtbSAvpSUf4tgqfuvEFwy7VeSTwti1zC90T'
+ACCESS_TOKEN = ''
 #'YOUR_ACCESS_TOKEN'
 
 #Fill these with your oauth token and token secrets, taken from your Twitter.
-OAUTH_TOKEN = '1385580451-y593FuyJ50ZmbdFcgGioLwYtf33DF8Lb5f4OTtV'
-OAUTH_TOKEN_SECRET = 'U2lxB00PfcToAVuW0WTR21uCGZVIh4hGsUmkhYZbWFHOJ'
+OAUTH_TOKEN = ''
+OAUTH_TOKEN_SECRET = ''
 
 def getToken():
     twitter = Twython(APP_KEY, APP_SECRET, oauth_version=2);
